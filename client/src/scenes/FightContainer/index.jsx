@@ -1,4 +1,11 @@
-import { Box, Button, Modal, Typography, useTheme } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Button,
+  Modal,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import FightCard from "components/FightCard/FightCard";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -57,8 +64,21 @@ const FightContainer = () => {
           aria-describedby="match-modal-description"
           sx={{ textAlign: "center", backgroundColor: "black" }}
         >
-          <Box>
-            <Typography id="match-modal-title" variant="h6" component="h2">
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              height: "100svh",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Typography
+              id="match-modal-title"
+              variant="h6"
+              component="h2"
+              sx={{ marginBottom: "2rem" }}
+            >
               It's a match!
             </Typography>
             <Button
@@ -68,6 +88,7 @@ const FightContainer = () => {
                 backgroundColor: theme.palette.background.default,
                 color: theme.palette.primary.main,
                 "&:hover": { color: theme.palette.secondary.main },
+                marginBottom: "1rem",
               }}
               onClick={() =>
                 dispatch(setCurrentPage({ currentPage: "matches" }))

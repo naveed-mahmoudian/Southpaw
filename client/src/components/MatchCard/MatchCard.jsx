@@ -1,7 +1,20 @@
 import React from "react";
-import { useTheme, Paper, Typography, Button, Box } from "@mui/material";
+import {
+  useTheme,
+  Paper,
+  Typography,
+  Button,
+  Box,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemAvatar,
+  Avatar,
+  Divider,
+} from "@mui/material";
 import ChatIcon from "@mui/icons-material/Chat";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import ClearIcon from "@mui/icons-material/Clear";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentPage } from "redux/state";
 
@@ -49,46 +62,88 @@ const MatchCard = ({ match, fetchMatches }) => {
   };
 
   return (
-    <Paper
-      variant="outlined"
+    <List
       sx={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        marginBottom: "1rem",
+        width: "100%",
+        maxWidth: 360,
+        bgcolor: `${theme.palette.background.paper}`,
       }}
     >
-      <Typography sx={{ m: "0.5rem" }}>
-        {match.firstName} {match.lastInitial}.
-      </Typography>
-      <Box>
+      <ListItem alignItems="flex-start" onClick={handleChat}>
+        <ListItemAvatar>
+          <Avatar
+            alt={`${match.firstName} ${match.lastName}`}
+            src={`http://localhost:3001/assets/${match.picturePath}`}
+          />
+        </ListItemAvatar>
+        <ListItemText
+          primary={`${match.firstName} ${match.lastInitial}.`}
+          secondary={
+            <React.Fragment>
+              {"I'll be in your neighborhood doing errands, and this…"}
+            </React.Fragment>
+          }
+        />
         <Button
           sx={{
-            border: `1px solid ${theme.palette.primary.main}`,
             backgroundColor: theme.palette.background.default,
             color: theme.palette.primary.main,
             "&:hover": { color: theme.palette.secondary.main },
             m: "0.5rem",
           }}
-          onClick={handleChat}
-        >
-          <ChatIcon />
-        </Button>
-        <Button
-          sx={{
-            border: `1px solid ${theme.palette.primary.main}`,
-            backgroundColor: theme.palette.background.default,
-            color: theme.palette.primary.main,
-            "&:hover": { color: theme.palette.secondary.main },
-            m: "0.5rem",
+          onClick={(event) => {
+            event.stopPropagation();
+            return handleRemoveMatch();
           }}
-          onClick={handleRemoveMatch}
         >
-          <DeleteForeverIcon />
+          <ClearIcon />
         </Button>
-      </Box>
-    </Paper>
+      </ListItem>
+      <Divider variant="inset" component="li" />
+    </List>
   );
+
+  //   return (
+  //     <Paper
+  //       variant="outlined"
+  //       sx={{
+  //         display: "flex",
+  //         justifyContent: "space-between",
+  //         alignItems: "center",
+  //         marginBottom: "1rem",
+  //       }}
+  //     >
+  //       <Typography sx={{ m: "0.5rem" }}>
+  //         {match.firstName} {match.lastInitial}.
+  //       </Typography>
+  //       <Box>
+  //         <Button
+  //           sx={{
+  //             border: `1px solid ${theme.palette.primary.main}`,
+  //             backgroundColor: theme.palette.background.default,
+  //             color: theme.palette.primary.main,
+  //             "&:hover": { color: theme.palette.secondary.main },
+  //             m: "0.5rem",
+  //           }}
+  //           onClick={handleChat}
+  //         >
+  //           <ChatIcon />
+  //         </Button>
+  //         <Button
+  //           sx={{
+  //             border: `1px solid ${theme.palette.primary.main}`,
+  //             backgroundColor: theme.palette.background.default,
+  //             color: theme.palette.primary.main,
+  //             "&:hover": { color: theme.palette.secondary.main },
+  //             m: "0.5rem",
+  //           }}
+  //           onClick={handleRemoveMatch}
+  //         >
+  //           <DeleteForeverIcon />
+  //         </Button>
+  //       </Box>
+  //     </Paper>
+  //   );
 };
 
 export default MatchCard;
