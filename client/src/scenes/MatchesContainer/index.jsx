@@ -1,4 +1,4 @@
-import { useTheme, Box, Typography } from "@mui/material";
+import { useTheme, Box, Typography, Divider } from "@mui/material";
 import MatchCard from "components/MatchCard/MatchCard";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -52,6 +52,7 @@ const MatchesContainer = () => {
       <Typography variant="h5" sx={{ marginBottom: "1rem" }}>
         Your Matches
       </Typography>
+      <Divider />
       {matches.length === 0 ? (
         <Typography>No matches</Typography>
       ) : (

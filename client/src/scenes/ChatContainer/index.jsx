@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   useTheme,
   Box,
@@ -7,7 +7,6 @@ import {
   Avatar,
   Paper,
   FormControl,
-  InputLabel,
   Input,
   InputAdornment,
 } from "@mui/material";
@@ -15,6 +14,7 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import SendIcon from "@mui/icons-material/Send";
 import { useDispatch, useSelector } from "react-redux";
 import { setChatUser, setCurrentPage } from "redux/state";
+import io from "socket.io-client";
 
 const ChatContainer = () => {
   // Variables
@@ -22,7 +22,12 @@ const ChatContainer = () => {
 
   // Redux
   const chatUser = useSelector((state) => state.chatUser);
+  const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
+
+  // State
+  const [socket, setSocket] = useState(null);
+  const [message, setMessage] = useState("");
 
   // Helper Functions
   const handleGoBack = () => {
@@ -38,6 +43,25 @@ const ChatContainer = () => {
       })
     );
   };
+
+  const handleSendMessage = () => {
+    socket.emit("send_message", {
+      sender: user._id,
+      receiver: chatUser._id,
+      message: message,
+    });
+  };
+
+  // Use Effect
+  useEffect(() => {
+    const newSocket = io("http://localhost:3001", {
+      path: "/api/chat",
+    });
+    setSocket(newSocket);
+    console.log(newSocket);
+
+    return () => newSocket.disconnect();
+  }, []);
 
   return (
     <Paper
@@ -99,9 +123,11 @@ const ChatContainer = () => {
             multiline
             maxRows={4}
             placeholder="..."
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
             endAdornment={
               <InputAdornment position="end">
-                <SendIcon />
+                <SendIcon onClick={handleSendMessage} />
               </InputAdornment>
             }
           />
