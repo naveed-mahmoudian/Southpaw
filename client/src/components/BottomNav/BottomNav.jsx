@@ -9,7 +9,7 @@ import {
 import SportsMmaIcon from "@mui/icons-material/SportsMma";
 import GroupsIcon from "@mui/icons-material/Groups";
 import { useDispatch, useSelector } from "react-redux";
-import { setCurrentPage } from "../../redux/state";
+import { setChatUser, setCurrentPage } from "../../redux/state";
 
 const BottomNav = () => {
   // Variables
@@ -38,10 +38,20 @@ const BottomNav = () => {
           currentPage: "fight",
         })
       );
+      dispatch(
+        setChatUser({
+          chatUser: null,
+        })
+      );
     } else if (value === 1) {
       dispatch(
         setCurrentPage({
           currentPage: "matches",
+        })
+      );
+      dispatch(
+        setChatUser({
+          chatUser: null,
         })
       );
     } else if (value === 2) {

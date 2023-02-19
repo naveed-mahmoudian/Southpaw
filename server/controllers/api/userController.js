@@ -41,7 +41,7 @@ export const getMatches = async (req, res) => {
 
     if (!userMatches) return res.status(404).json({ msg: "No user matches." });
 
-    res.status(200).json(userMatches.matches);
+    res.status(200).json(userMatches.matches.reverse());
   } catch (err) {
     res.status(500).json({ msg: err.message });
   }

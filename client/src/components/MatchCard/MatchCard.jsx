@@ -16,7 +16,7 @@ import ChatIcon from "@mui/icons-material/Chat";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import ClearIcon from "@mui/icons-material/Clear";
 import { useDispatch, useSelector } from "react-redux";
-import { setCurrentPage } from "redux/state";
+import { setChatUser, setCurrentPage } from "redux/state";
 
 const MatchCard = ({ match, fetchMatches }) => {
   // Variables
@@ -59,6 +59,12 @@ const MatchCard = ({ match, fetchMatches }) => {
         currentPage: "chat",
       })
     );
+
+    dispatch(
+      setChatUser({
+        chatUser: match,
+      })
+    );
   };
 
   return (
@@ -99,7 +105,7 @@ const MatchCard = ({ match, fetchMatches }) => {
           <ClearIcon />
         </Button>
       </ListItem>
-      <Divider variant="inset" component="li" />
+      <Divider variant="middle" component="li" />
     </List>
   );
 
