@@ -1,10 +1,7 @@
 import React from "react";
 import {
   useTheme,
-  Paper,
-  Typography,
   Button,
-  Box,
   List,
   ListItem,
   ListItemText,
@@ -12,8 +9,6 @@ import {
   Avatar,
   Divider,
 } from "@mui/material";
-import ChatIcon from "@mui/icons-material/Chat";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import ClearIcon from "@mui/icons-material/Clear";
 import { useDispatch, useSelector } from "react-redux";
 import { setChatUser, setCurrentPage } from "redux/state";
@@ -108,48 +103,6 @@ const MatchCard = ({ match, fetchMatches }) => {
       <Divider variant="middle" component="li" />
     </List>
   );
-
-  //   return (
-  //     <Paper
-  //       variant="outlined"
-  //       sx={{
-  //         display: "flex",
-  //         justifyContent: "space-between",
-  //         alignItems: "center",
-  //         marginBottom: "1rem",
-  //       }}
-  //     >
-  //       <Typography sx={{ m: "0.5rem" }}>
-  //         {match.firstName} {match.lastInitial}.
-  //       </Typography>
-  //       <Box>
-  //         <Button
-  //           sx={{
-  //             border: `1px solid ${theme.palette.primary.main}`,
-  //             backgroundColor: theme.palette.background.default,
-  //             color: theme.palette.primary.main,
-  //             "&:hover": { color: theme.palette.secondary.main },
-  //             m: "0.5rem",
-  //           }}
-  //           onClick={handleChat}
-  //         >
-  //           <ChatIcon />
-  //         </Button>
-  //         <Button
-  //           sx={{
-  //             border: `1px solid ${theme.palette.primary.main}`,
-  //             backgroundColor: theme.palette.background.default,
-  //             color: theme.palette.primary.main,
-  //             "&:hover": { color: theme.palette.secondary.main },
-  //             m: "0.5rem",
-  //           }}
-  //           onClick={handleRemoveMatch}
-  //         >
-  //           <DeleteForeverIcon />
-  //         </Button>
-  //       </Box>
-  //     </Paper>
-  //   );
 };
 
 export default MatchCard;
