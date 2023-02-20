@@ -7,6 +7,8 @@ import { themeOptions } from "./themes/defaultTheme";
 import LoginRegisterPage from "./scenes/LoginRegisterPage";
 import HomePage from "./scenes/HomePage";
 import TermsAndConditions from "scenes/TermsAndConditions";
+import MatchesPage from "./scenes/MatchesPage";
+import ChatPage from "scenes/ChatPage";
 
 function App() {
   const theme = createTheme(themeOptions);
@@ -25,6 +27,14 @@ function App() {
             <Route
               path="/home"
               element={isAuth ? <HomePage /> : <Navigate to="/" />}
+            />
+            <Route
+              path="/matches"
+              element={isAuth ? <MatchesPage /> : <Navigate to="/" />}
+            />
+            <Route
+              path="/chat"
+              element={isAuth ? <ChatPage /> : <Navigate to="/" />}
             />
             <Route
               path="/terms-and-conditions"

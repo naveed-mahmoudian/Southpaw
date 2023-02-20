@@ -2,10 +2,10 @@ import React from "react";
 import { Box, Typography, useTheme } from "@mui/material";
 import BottomNav from "../../components/BottomNav/BottomNav";
 import { useSelector } from "react-redux";
-import FightContainer from "scenes/FightContainer";
+import MatchesContainer from "scenes/MatchesContainer";
 import LogoutButton from "components/LogoutButton/LogoutButton";
 
-const HomePage = () => {
+const MatchesPage = () => {
   const theme = useTheme();
   const user = useSelector((state) => state.user);
   const currentPage = useSelector((state) => state.currentPage);
@@ -14,10 +14,10 @@ const HomePage = () => {
     <Box>
       <LogoutButton />
       <Typography>Welcome, {user.firstName}</Typography>
-      {currentPage === "fight" ? <FightContainer /> : ""}
+      {currentPage === "matches" ? <MatchesContainer /> : ""}
       <BottomNav />
     </Box>
   );
 };
 
-export default HomePage;
+export default MatchesPage;

@@ -15,10 +15,12 @@ import SendIcon from "@mui/icons-material/Send";
 import { useDispatch, useSelector } from "react-redux";
 import { setChatUser, setCurrentPage } from "redux/state";
 import io from "socket.io-client";
+import { useNavigate } from "react-router-dom";
 
 const ChatContainer = () => {
   // Variables
   const theme = useTheme();
+  const navigate = useNavigate();
 
   // Redux
   const chatUser = useSelector((state) => state.chatUser);
@@ -31,6 +33,8 @@ const ChatContainer = () => {
 
   // Helper Functions
   const handleGoBack = () => {
+    navigate("/home");
+
     dispatch(
       setCurrentPage({
         currentPage: "matches",

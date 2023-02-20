@@ -10,10 +10,12 @@ import SportsMmaIcon from "@mui/icons-material/SportsMma";
 import GroupsIcon from "@mui/icons-material/Groups";
 import { useDispatch, useSelector } from "react-redux";
 import { setChatUser, setCurrentPage } from "../../redux/state";
+import { useNavigate } from "react-router-dom";
 
 const BottomNav = () => {
   // Variables
   const theme = useTheme();
+  const navigate = useNavigate();
 
   // Redux
   const dispatch = useDispatch();
@@ -33,6 +35,7 @@ const BottomNav = () => {
   // Use Effect
   useEffect(() => {
     if (value === 0) {
+      navigate("/home");
       dispatch(
         setCurrentPage({
           currentPage: "fight",
@@ -44,6 +47,7 @@ const BottomNav = () => {
         })
       );
     } else if (value === 1) {
+      navigate("/matches");
       dispatch(
         setCurrentPage({
           currentPage: "matches",
@@ -55,6 +59,7 @@ const BottomNav = () => {
         })
       );
     } else if (value === 2) {
+      navigate("/chat");
       dispatch(
         setCurrentPage({
           currentPage: "chat",

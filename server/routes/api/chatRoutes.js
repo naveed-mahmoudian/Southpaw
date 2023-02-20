@@ -22,27 +22,13 @@ const io = new Server(httpServer, {
 });
 
 // Web Socket
+io.on("connection", (socket) => {
+  console.log("CONNECTED", socket);
+});
+
+// Get Route
 router.get("/", (req, res) => {
-  io.on("connection", (socket) => {
-    socket.on("send_message", async (data) => {
-      console.log("CONNECTED", data);
-      io.to(data.receiver).emit("receive_message", data);
-
-      // const newMessage = await Message.create({
-      //   fromId: data.fromId,
-      //   toId: data.toId,
-      //   message: data.message,
-      // });
-
-      // const updatedUserMessage = await User.findByIdAndUpdate(
-      //   data.fromId,
-      //   { $push: { messages: newMessage._id } },
-      //   { new: true }
-      // );
-
-      // socket.broadcast.emit("receive-message", data.message);
-    });
-  });
+  res.status(200).json({ msg: "chat" });
 });
 
 export default router;
