@@ -7,6 +7,7 @@ import {
   useTheme,
 } from "@mui/material";
 import FightCard from "components/FightCard/FightCard";
+import { MATCHES } from "pageConstants";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentPage } from "redux/state";
@@ -90,9 +91,7 @@ const FightContainer = () => {
                 "&:hover": { color: theme.palette.secondary.main },
                 marginBottom: "1rem",
               }}
-              onClick={() =>
-                dispatch(setCurrentPage({ currentPage: "matches" }))
-              }
+              onClick={() => dispatch(setCurrentPage({ currentPage: MATCHES }))}
             >
               See Your Matches
             </Button>

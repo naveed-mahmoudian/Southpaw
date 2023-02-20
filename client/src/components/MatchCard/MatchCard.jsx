@@ -13,6 +13,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 import { useDispatch, useSelector } from "react-redux";
 import { setChatUser, setCurrentPage } from "redux/state";
 import { useNavigate } from "react-router-dom";
+import { CHAT } from "pageConstants";
 
 const MatchCard = ({ match, fetchMatches }) => {
   // Variables
@@ -54,7 +55,7 @@ const MatchCard = ({ match, fetchMatches }) => {
     navigate("/chat");
     dispatch(
       setCurrentPage({
-        currentPage: "chat",
+        currentPage: CHAT,
       })
     );
 

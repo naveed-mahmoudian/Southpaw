@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setChatUser, setCurrentPage } from "redux/state";
 import io from "socket.io-client";
 import { useNavigate } from "react-router-dom";
+import { MATCHES, PROFILE } from "pageConstants";
 
 const ChatContainer = () => {
   // Variables
@@ -37,7 +38,7 @@ const ChatContainer = () => {
 
     dispatch(
       setCurrentPage({
-        currentPage: "matches",
+        currentPage: MATCHES,
       })
     );
 
@@ -61,7 +62,7 @@ const ChatContainer = () => {
 
     dispatch(
       setCurrentPage({
-        currentPage: "profile",
+        currentPage: PROFILE,
       })
     );
   };
@@ -96,7 +97,7 @@ const ChatContainer = () => {
         }}
       >
         <ArrowBackIosNewIcon onClick={handleGoBack} />
-        <Typography>
+        <Typography onClick={handleProfile}>
           {chatUser.firstName} {chatUser.lastInitial}.
         </Typography>
         <Avatar

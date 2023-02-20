@@ -20,7 +20,7 @@ router.use("/chat", chatRoutes);
 // Read
 router.get("/users/:id", verifyToken, getUsers);
 router.get("/users/:id/matches", verifyToken, getMatches);
-// router.get("/users/:id", verifyToken, getUser);
+router.get("/user/:id", verifyToken, getUser);
 
 // Update
 router.patch("/users/:id/actions/fight", verifyToken, addFight);

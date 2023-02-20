@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setCurrentPage, setLogin } from "../../redux/state";
 import Dropzone from "react-dropzone";
+import { HOME } from "pageConstants";
 
 // Validation Schemas
 const signupSchema = yup.object().shape({
@@ -118,7 +119,7 @@ const Form = () => {
       navigate("/home");
       dispatch(
         setCurrentPage({
-          currentPage: "fight",
+          currentPage: HOME,
         })
       );
     }

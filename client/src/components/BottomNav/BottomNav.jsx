@@ -11,6 +11,7 @@ import GroupsIcon from "@mui/icons-material/Groups";
 import { useDispatch, useSelector } from "react-redux";
 import { setChatUser, setCurrentPage } from "../../redux/state";
 import { useNavigate } from "react-router-dom";
+import { HOME, MATCHES, CHAT, PROFILE } from "../../pageConstants";
 
 const BottomNav = () => {
   // Variables
@@ -23,13 +24,13 @@ const BottomNav = () => {
 
   // State
   const [value, setValue] = useState(() => {
-    if (currentPage === "fight") {
+    if (currentPage === HOME) {
       return 0;
-    } else if (currentPage === "matches") {
+    } else if (currentPage === MATCHES) {
       return 1;
-    } else if (currentPage === "chat") {
+    } else if (currentPage === CHAT) {
       return 2;
-    } else if (currentPage === "profile") {
+    } else if (currentPage === PROFILE) {
       return 3;
     }
   });
@@ -40,7 +41,7 @@ const BottomNav = () => {
       navigate("/home");
       dispatch(
         setCurrentPage({
-          currentPage: "fight",
+          currentPage: HOME,
         })
       );
       dispatch(
@@ -52,7 +53,7 @@ const BottomNav = () => {
       navigate("/matches");
       dispatch(
         setCurrentPage({
-          currentPage: "matches",
+          currentPage: MATCHES,
         })
       );
       dispatch(
@@ -64,27 +65,27 @@ const BottomNav = () => {
       navigate("/chat");
       dispatch(
         setCurrentPage({
-          currentPage: "chat",
+          currentPage: CHAT,
         })
       );
     } else if (value === 2) {
       navigate("/profile");
       dispatch(
         setCurrentPage({
-          currentPage: "profile",
+          currentPage: PROFILE,
         })
       );
     }
   }, [value]);
 
   useEffect(() => {
-    if (currentPage === "fight") {
+    if (currentPage === HOME) {
       setValue(0);
-    } else if (currentPage === "matches") {
+    } else if (currentPage === MATCHES) {
       setValue(1);
-    } else if (currentPage === "chat") {
+    } else if (currentPage === CHAT) {
       setValue(2);
-    } else if (currentPage === "profile") {
+    } else if (currentPage === PROFILE) {
       setValue(3);
     }
   }, [currentPage]);
@@ -116,7 +117,7 @@ const BottomNav = () => {
             label="Fight"
             icon={
               <SportsMmaIcon
-                sx={{ color: `${currentPage === "fight" ? "red" : "white"}` }}
+                sx={{ color: `${currentPage === HOME ? "red" : "white"}` }}
               />
             }
           />
@@ -124,7 +125,7 @@ const BottomNav = () => {
             label="Matches"
             icon={
               <GroupsIcon
-                sx={{ color: `${currentPage === "matches" ? "red" : "white"}` }}
+                sx={{ color: `${currentPage === MATCHES ? "red" : "white"}` }}
               />
             }
           />

@@ -4,6 +4,7 @@ import BottomNav from "../../components/BottomNav/BottomNav";
 import { useSelector } from "react-redux";
 import FightContainer from "scenes/FightContainer";
 import LogoutButton from "components/LogoutButton/LogoutButton";
+import { HOME } from "pageConstants";
 
 const HomePage = () => {
   const theme = useTheme();
@@ -14,7 +15,7 @@ const HomePage = () => {
     <Box>
       <LogoutButton />
       <Typography>Welcome, {user.firstName}</Typography>
-      {currentPage === "fight" ? <FightContainer /> : ""}
+      {currentPage === HOME ? <FightContainer /> : ""}
       <BottomNav />
     </Box>
   );

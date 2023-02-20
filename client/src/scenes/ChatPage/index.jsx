@@ -4,6 +4,7 @@ import BottomNav from "../../components/BottomNav/BottomNav";
 import { useSelector } from "react-redux";
 import LogoutButton from "components/LogoutButton/LogoutButton";
 import ChatContainer from "scenes/ChatContainer";
+import { CHAT } from "pageConstants";
 
 const ChatPage = () => {
   const theme = useTheme();
@@ -14,7 +15,7 @@ const ChatPage = () => {
     <Box>
       <LogoutButton />
       <Typography>Welcome, {user.firstName}</Typography>
-      {currentPage === "chat" ? <ChatContainer /> : ""}
+      {currentPage === CHAT ? <ChatContainer /> : ""}
       <BottomNav />
     </Box>
   );

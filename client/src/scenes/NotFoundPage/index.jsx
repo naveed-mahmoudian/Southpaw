@@ -1,4 +1,5 @@
 import { Box, Button, Typography, useTheme } from "@mui/material";
+import { HOME } from "pageConstants";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -17,7 +18,7 @@ const NotFound = () => {
     navigate("/home");
     dispatch(
       setCurrentPage({
-        currentPage: "fight",
+        currentPage: HOME,
       })
     );
   };

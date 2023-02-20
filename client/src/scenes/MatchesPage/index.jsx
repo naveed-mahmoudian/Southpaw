@@ -4,6 +4,7 @@ import BottomNav from "../../components/BottomNav/BottomNav";
 import { useSelector } from "react-redux";
 import MatchesContainer from "scenes/MatchesContainer";
 import LogoutButton from "components/LogoutButton/LogoutButton";
+import { MATCHES } from "pageConstants";
 
 const MatchesPage = () => {
   const theme = useTheme();
@@ -14,7 +15,7 @@ const MatchesPage = () => {
     <Box>
       <LogoutButton />
       <Typography>Welcome, {user.firstName}</Typography>
-      {currentPage === "matches" ? <MatchesContainer /> : ""}
+      {currentPage === MATCHES ? <MatchesContainer /> : ""}
       <BottomNav />
     </Box>
   );
