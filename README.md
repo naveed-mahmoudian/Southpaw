@@ -52,7 +52,7 @@ This is just a joke app, please do not use this app to actually fight people. Th
 
 ## Get Involved
 
-To contribute to this project, request access, clone the repo, and switch to `dev` branch. Submit a pull request and we'll review it shortly. Only quality pull requests will only be reviewed, so please be sure to include quality comments and commit messages. Thanks!! :)
+To contribute to this project, request access, clone the repo, and create a new branch titled `dev/YOUR_NAME`. Submit a pull request and we'll review it shortly. Only quality pull requests will only be reviewed, so please be sure to include quality comments and commit messages. Thanks!! :)
 
 ## Questions
 
