@@ -29,6 +29,8 @@ const BottomNav = () => {
       return 1;
     } else if (currentPage === "chat") {
       return 2;
+    } else if (currentPage === "profile") {
+      return 3;
     }
   });
 
@@ -65,6 +67,13 @@ const BottomNav = () => {
           currentPage: "chat",
         })
       );
+    } else if (value === 2) {
+      navigate("/profile");
+      dispatch(
+        setCurrentPage({
+          currentPage: "profile",
+        })
+      );
     }
   }, [value]);
 
@@ -75,6 +84,8 @@ const BottomNav = () => {
       setValue(1);
     } else if (currentPage === "chat") {
       setValue(2);
+    } else if (currentPage === "profile") {
+      setValue(3);
     }
   }, [currentPage]);
 

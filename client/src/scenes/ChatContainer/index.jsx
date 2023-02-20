@@ -56,6 +56,16 @@ const ChatContainer = () => {
     });
   };
 
+  const handleProfile = () => {
+    navigate(`/profile/${chatUser._id}`);
+
+    dispatch(
+      setCurrentPage({
+        currentPage: "profile",
+      })
+    );
+  };
+
   // Use Effect
   useEffect(() => {
     const newSocket = io("http://localhost:3001", {
@@ -92,6 +102,7 @@ const ChatContainer = () => {
         <Avatar
           alt={`${chatUser.firstName} ${chatUser.lastInitial}`}
           src={`http://localhost:3001/assets/${chatUser.picturePath}`}
+          onClick={handleProfile}
         />
       </Box>
       <Box
