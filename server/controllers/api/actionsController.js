@@ -1,4 +1,7 @@
 import User from "../../models/User.js";
+import ChatRoom from "../../models/ChatRoom.js";
+import getChatRoomId from "../../utils/getChatRoomId.js";
+import Message from "../../models/Message.js";
 
 export const addFight = async (req, res) => {
   try {
@@ -11,10 +14,16 @@ export const addFight = async (req, res) => {
     if (fightsArray.includes(id)) {
       isMatch = true;
 
+      const newChatRoom = await ChatRoom.create({
+        users: [id, userId],
+      });
+
+      console.log(newChatRoom);
+
       const updatedUser = await User.findByIdAndUpdate(
         id,
         {
-          $addToSet: { matches: userId },
+          $addToSet: { matches: userId, chat_rooms: newChatRoom._id },
         },
         { new: true }
       );
@@ -23,7 +32,10 @@ export const addFight = async (req, res) => {
 
       await User.findByIdAndUpdate(
         userId,
-        { $pull: { fights: id }, $addToSet: { matches: id } },
+        {
+          $pull: { fights: id },
+          $addToSet: { matches: id, chat_rooms: newChatRoom._id },
+        },
         { new: true }
       );
 
@@ -87,4 +99,54 @@ export const removeMatch = async (req, res) => {
   } catch (err) {
     res.status(500).json({ msg: err.message });
   }
+};
+
+export const sendMessage = async (req, res) => {
+  const { id } = req.params;
+  const { userId, message } = req.body;
+  const chatRoomId = await getChatRoomId(id, userId);
+
+  const newMessage = await Message.create({
+    fromId: id,
+    toId: userId,
+    message: message,
+  });
+
+  if (!newMessage)
+    return res.status(400).json({ msg: "Could not create message" });
+
+  const updatedFromUser = await User.findByIdAndUpdate(
+    id,
+    {
+      $push: { messages: newMessage._id },
+    },
+    { new: true }
+  );
+
+  if (!updatedFromUser)
+    return res.status(400).json({ msg: "Could not add message to FROM user" });
+
+  // const updatedToUser = await User.findByIdAndUpdate(
+  //   userId,
+  //   {
+  //     $push: { messages: newMessage._id },
+  //   },
+  //   { new: true }
+  // );
+
+  // if (!updatedToUser)
+  //   return res.status(400).json({ msg: "Could not add message to TO user" });
+
+  const updatedChatRoom = await ChatRoom.findByIdAndUpdate(
+    chatRoomId,
+    {
+      $push: { messages: newMessage._id },
+    },
+    { new: true }
+  ).populate("messages");
+
+  if (!updatedChatRoom)
+    return res.status(400).json({ msg: "Could not update chat room messages" });
+
+  res.status(201).json({ messageSent: true });
 };

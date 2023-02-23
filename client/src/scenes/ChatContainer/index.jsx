@@ -14,11 +14,10 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import SendIcon from "@mui/icons-material/Send";
 import { useDispatch, useSelector } from "react-redux";
 import { setChatUser, setCurrentPage } from "redux/state";
-import io from "socket.io-client";
 import { useNavigate } from "react-router-dom";
 import { MATCHES, PROFILE } from "pageConstants";
 
-const ChatContainer = () => {
+const ChatContainer = ({ socket }) => {
   // Variables
   const theme = useTheme();
   const navigate = useNavigate();
@@ -26,15 +25,19 @@ const ChatContainer = () => {
   // Redux
   const chatUser = useSelector((state) => state.chatUser);
   const user = useSelector((state) => state.user);
+  const token = useSelector((state) => state.token);
   const dispatch = useDispatch();
 
   // State
-  const [socket, setSocket] = useState(null);
   const [message, setMessage] = useState("");
+  const [messages, setMessages] = useState([]);
+  const [showMessages, setShowMessages] = useState(false);
 
   // Helper Functions
   const handleGoBack = () => {
     navigate("/home");
+
+    socket.disconnect();
 
     dispatch(
       setCurrentPage({
@@ -49,12 +52,50 @@ const ChatContainer = () => {
     );
   };
 
-  const handleSendMessage = () => {
-    socket.emit("send_message", {
-      sender: user._id,
-      receiver: chatUser._id,
+  const handleSendMessage = async () => {
+    socket.emit("private message", {
       message: message,
+      fromUser: user,
+      toUser: chatUser,
     });
+    try {
+      const sendMessageResponse = await fetch(
+        `/api/users/${user._id}/actions/sendMessage`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId: chatUser._id, message: message }),
+        }
+      );
+      await sendMessageResponse.json();
+      await fetchMessages();
+    } catch (err) {
+      console.error(err.message);
+    }
+    setMessage("");
+  };
+
+  const fetchMessages = async () => {
+    try {
+      const messagesResponse = await fetch(
+        `/api/users/${user._id}/${chatUser._id}/messages`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const messagesData = await messagesResponse.json();
+      setMessages(messagesData);
+    } catch (err) {
+      console.error(err.message);
+    }
   };
 
   const handleProfile = () => {
@@ -67,16 +108,29 @@ const ChatContainer = () => {
     );
   };
 
+  socket.on("private message", async (content) => {
+    await fetchMessages();
+  });
+
   // Use Effect
   useEffect(() => {
-    const newSocket = io("http://localhost:3001", {
-      path: "/api/chat",
-    });
-    setSocket(newSocket);
-    console.log(newSocket);
+    socket.connect();
 
-    return () => newSocket.disconnect();
+    socket.emit("join room", { fromUserId: user._id, toUserId: chatUser._id });
+
+    async function getMessages() {
+      await fetchMessages();
+    }
+    getMessages();
   }, []);
+
+  useEffect(() => {
+    if (messages.length > 0) {
+      setShowMessages(true);
+    } else {
+      setShowMessages(false);
+    }
+  }, [messages]);
 
   return (
     <Paper
@@ -115,14 +169,13 @@ const ChatContainer = () => {
           p: "1rem",
         }}
       >
-        <TextField
-          fullWidth
-          multiline
-          rows={20}
-          variant="filled"
-          disabled
-          value={"Messages"}
-        ></TextField>
+        {showMessages ? (
+          messages.map((message) => (
+            <Typography key={message._id}>{message.message}</Typography>
+          ))
+        ) : (
+          <Typography>No messages</Typography>
+        )}
       </Box>
       <Box
         sx={{

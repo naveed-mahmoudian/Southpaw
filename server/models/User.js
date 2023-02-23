@@ -82,6 +82,12 @@ const userSchema = new mongoose.Schema(
         ref: "Message",
       },
     ],
+    chat_rooms: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "ChatRoom",
+      },
+    ],
   },
   {
     timestamps: true,

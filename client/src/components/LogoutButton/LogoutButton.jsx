@@ -2,6 +2,7 @@ import React from "react";
 import { Button, useTheme } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { setLogout } from "redux/state";
+import socket from "../../socket";
 
 const LogoutButton = () => {
   // Variables
@@ -12,6 +13,7 @@ const LogoutButton = () => {
 
   // Helper Functions
   const handleLogout = () => {
+    socket.disconnect();
     dispatch(setLogout());
   };
 

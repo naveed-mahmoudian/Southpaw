@@ -1,4 +1,6 @@
 import User from "../../models/User.js";
+import ChatRoom from "../../models/ChatRoom.js";
+import getChatRoomId from "../../utils/getChatRoomId.js";
 
 export const getUsers = async (req, res) => {
   try {
@@ -56,6 +58,21 @@ export const getUser = async (req, res) => {
     if (!user) return res.status(404).json({ msg: "No user found" });
 
     res.status(200).json(user);
+  } catch (err) {
+    res.status(500).json({ msg: err.message });
+  }
+};
+
+export const getMessages = async (req, res) => {
+  try {
+    const { id, userId } = req.params;
+    const chatRoomId = await getChatRoomId(id, userId);
+
+    const chatRoom = await ChatRoom.findById(chatRoomId).populate("messages");
+
+    if (!chatRoom) return res.status(404).json({ msg: "No chat rooms found" });
+
+    res.status(200).json(chatRoom.messages);
   } catch (err) {
     res.status(500).json({ msg: err.message });
   }
