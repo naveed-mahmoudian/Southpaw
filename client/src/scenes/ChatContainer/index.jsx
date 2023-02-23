@@ -31,7 +31,7 @@ const ChatContainer = ({ socket }) => {
   // State
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
-  const [showMessages, setShowMessages] = useState(false);
+  // const [showMessages, setShowMessages] = useState(false);
 
   // Helper Functions
   const handleGoBack = () => {
@@ -70,8 +70,12 @@ const ChatContainer = ({ socket }) => {
           body: JSON.stringify({ userId: chatUser._id, message: message }),
         }
       );
-      await sendMessageResponse.json();
-      await fetchMessages();
+      const sendMessageData = await sendMessageResponse.json();
+      if (sendMessageData.messageSent) {
+        await fetchMessages();
+      } else {
+        console.error("Unable to send message");
+      }
     } catch (err) {
       console.error(err.message);
     }
@@ -109,7 +113,11 @@ const ChatContainer = ({ socket }) => {
   };
 
   socket.on("private message", async (content) => {
-    await fetchMessages();
+    try {
+      await fetchMessages();
+    } catch (err) {
+      console.error(err.message);
+    }
   });
 
   // Use Effect
@@ -124,13 +132,13 @@ const ChatContainer = ({ socket }) => {
     getMessages();
   }, []);
 
-  useEffect(() => {
-    if (messages.length > 0) {
-      setShowMessages(true);
-    } else {
-      setShowMessages(false);
-    }
-  }, [messages]);
+  // useEffect(() => {
+  //   if (messages.length > 0) {
+  //     setShowMessages(true);
+  //   } else {
+  //     setShowMessages(false);
+  //   }
+  // }, [messages]);
 
   return (
     <Paper
@@ -169,7 +177,7 @@ const ChatContainer = ({ socket }) => {
           p: "1rem",
         }}
       >
-        {showMessages ? (
+        {messages.length > 0 ? (
           messages.map((message) => (
             <Typography key={message._id}>{message.message}</Typography>
           ))
