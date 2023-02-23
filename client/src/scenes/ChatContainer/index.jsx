@@ -31,7 +31,6 @@ const ChatContainer = ({ socket }) => {
   // State
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
-  // const [showMessages, setShowMessages] = useState(false);
 
   // Helper Functions
   const handleGoBack = () => {
@@ -131,14 +130,6 @@ const ChatContainer = ({ socket }) => {
     }
     getMessages();
   }, []);
-
-  // useEffect(() => {
-  //   if (messages.length > 0) {
-  //     setShowMessages(true);
-  //   } else {
-  //     setShowMessages(false);
-  //   }
-  // }, [messages]);
 
   return (
     <Paper
