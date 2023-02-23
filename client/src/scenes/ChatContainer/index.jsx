@@ -3,7 +3,6 @@ import {
   useTheme,
   Box,
   Typography,
-  TextField,
   Avatar,
   Paper,
   FormControl,
@@ -111,6 +110,7 @@ const ChatContainer = ({ socket }) => {
     );
   };
 
+  // Web Socket
   socket.on("private message", async (content) => {
     try {
       await fetchMessages();
