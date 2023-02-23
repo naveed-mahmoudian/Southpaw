@@ -1,4 +1,3 @@
-import User from "../models/User.js";
 import ChatRoom from "../models/ChatRoom.js";
 
 const getChatRoomId = async (fromUserId, toUserId) => {
