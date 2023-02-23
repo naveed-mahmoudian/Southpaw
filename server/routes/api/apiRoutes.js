@@ -12,12 +12,8 @@ import {
   sendMessage,
 } from "../../controllers/api/actionsController.js";
 import { verifyToken } from "../../middleware/auth.js";
-import chatRoutes from "./chatRoutes.js";
 
 const router = express.Router();
-
-// Routes
-router.use("/chat", chatRoutes);
 
 // Read
 router.get("/users/:id", verifyToken, getUsers);
