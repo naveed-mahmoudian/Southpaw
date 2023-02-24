@@ -137,7 +137,7 @@ const ChatContainer = ({ socket }) => {
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
-        height: "86svh",
+        height: "92svh",
       }}
     >
       <Box

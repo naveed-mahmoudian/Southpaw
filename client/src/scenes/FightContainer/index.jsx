@@ -2,6 +2,7 @@ import {
   Avatar,
   Box,
   Button,
+  CircularProgress,
   Modal,
   Typography,
   useTheme,
@@ -18,6 +19,7 @@ const FightContainer = () => {
 
   // State
   const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [openMatchModal, setOpenMatchModal] = useState(false);
   const handleOpen = () => setOpenMatchModal(true);
   const handleClose = () => setOpenMatchModal(false);
@@ -29,6 +31,7 @@ const FightContainer = () => {
   // Helper Functions
   const fetchUsers = async () => {
     try {
+      setLoading(true);
       const userResponse = await fetch(`/api/users/${user._id}`, {
         method: "GET",
         headers: {
@@ -41,9 +44,11 @@ const FightContainer = () => {
 
       if (userData) {
         setUsers(userData);
+        setLoading(false);
       }
     } catch (err) {
       console.error(err);
+      setLoading(false);
     }
   };
 
@@ -118,19 +123,34 @@ const FightContainer = () => {
           padding: "1rem",
         }}
       >
-        {users.length === 0 ? (
-          <Typography>No more fighters for now, come back soon!</Typography>
+        {loading ? (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "86svh",
+            }}
+          >
+            <CircularProgress />
+          </Box>
         ) : (
-          users.map((user) => {
-            return (
-              <FightCard
-                key={user._id}
-                user={user}
-                fetchUsers={fetchUsers}
-                handleMatch={handleMatch}
-              />
-            );
-          })
+          <>
+            {users.length === 0 ? (
+              <Typography>No more fighters for now, come back soon!</Typography>
+            ) : (
+              users.map((user) => {
+                return (
+                  <FightCard
+                    key={user._id}
+                    user={user}
+                    fetchUsers={fetchUsers}
+                    handleMatch={handleMatch}
+                  />
+                );
+              })
+            )}
+          </>
         )}
       </Box>
     </>

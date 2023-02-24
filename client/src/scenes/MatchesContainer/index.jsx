@@ -1,4 +1,10 @@
-import { useTheme, Box, Typography, Divider } from "@mui/material";
+import {
+  useTheme,
+  Box,
+  Typography,
+  Divider,
+  CircularProgress,
+} from "@mui/material";
 import MatchCard from "components/MatchCard/MatchCard";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -9,6 +15,7 @@ const MatchesContainer = () => {
 
   // State
   const [matches, setMatches] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   // Redux
   const token = useSelector((state) => state.token);
@@ -17,6 +24,7 @@ const MatchesContainer = () => {
   // Helper Functions
   const fetchMatches = async () => {
     try {
+      setLoading(true);
       const matchesResponse = await fetch(`/api/users/${user._id}/matches`, {
         method: "GET",
         headers: {
@@ -29,9 +37,11 @@ const MatchesContainer = () => {
 
       if (matchesData) {
         setMatches(matchesData);
+        setLoading(false);
       }
     } catch (err) {
       console.error(err);
+      setLoading(false);
     }
   };
 
@@ -53,18 +63,33 @@ const MatchesContainer = () => {
         Your Matches
       </Typography>
       <Divider />
-      {matches.length === 0 ? (
-        <Typography>No matches</Typography>
+      {loading ? (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "86svh",
+          }}
+        >
+          <CircularProgress />
+        </Box>
       ) : (
-        matches.map((match) => {
-          return (
-            <MatchCard
-              key={match._id}
-              match={match}
-              fetchMatches={fetchMatches}
-            />
-          );
-        })
+        <>
+          {matches.length === 0 ? (
+            <Typography>No matches</Typography>
+          ) : (
+            matches.map((match) => {
+              return (
+                <MatchCard
+                  key={match._id}
+                  match={match}
+                  fetchMatches={fetchMatches}
+                />
+              );
+            })
+          )}
+        </>
       )}
     </Box>
   );

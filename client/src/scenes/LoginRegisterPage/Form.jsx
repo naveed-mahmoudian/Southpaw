@@ -18,6 +18,7 @@ import { useDispatch } from "react-redux";
 import { setCurrentPage, setLogin } from "../../redux/state";
 import Dropzone from "react-dropzone";
 import { HOME } from "pageConstants";
+import GoogleMaps from "./GoogleMapsAutocomplete";
 
 // Validation Schemas
 const signupSchema = yup.object().shape({
@@ -164,6 +165,9 @@ const Form = () => {
                   onChange={handleChange}
                   name="firstName"
                   placeholder="John"
+                  inputProps={{
+                    style: { textTransform: "capitalize" },
+                  }}
                   error={
                     Boolean(touched.firstName) && Boolean(errors.firstName)
                   }
@@ -176,6 +180,10 @@ const Form = () => {
                   onChange={handleChange}
                   name="lastInitial"
                   placeholder="D"
+                  inputProps={{
+                    maxLength: 1,
+                    style: { textTransform: "capitalize" },
+                  }}
                   error={
                     Boolean(touched.lastInitial) && Boolean(errors.lastInitial)
                   }
@@ -197,6 +205,8 @@ const Form = () => {
                   onChange={handleChange}
                   name="bio"
                   placeholder="..."
+                  multiline
+                  maxRows={3}
                   error={Boolean(touched.bio) && Boolean(errors.bio)}
                   helperText={touched.bio && errors.bio}
                   sx={{ gridColumn: "span 6" }}
@@ -244,6 +254,7 @@ const Form = () => {
                   helperText={touched.location && errors.location}
                   sx={{ gridColumn: "span 6" }}
                 />
+                <GoogleMaps />
                 <TextField
                   label="Height"
                   onBlur={handleBlur}
