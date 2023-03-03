@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, List, Typography, useTheme } from "@mui/material";
 import BottomNav from "../../components/BottomNav/BottomNav";
 import { useSelector } from "react-redux";
 import FightContainer from "scenes/FightContainer";
@@ -12,12 +12,14 @@ const HomePage = () => {
   const currentPage = useSelector((state) => state.currentPage);
 
   return (
-    <Box>
+    <>
       <LogoutButton />
       <Typography>Welcome, {user.firstName}</Typography>
-      {currentPage === HOME ? <FightContainer /> : ""}
+      <List sx={{ overflow: "scroll", maxHeight: "86svh" }}>
+        {currentPage === HOME ? <FightContainer /> : ""}
+      </List>
       <BottomNav />
-    </Box>
+    </>
   );
 };
 

@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   CircularProgress,
+  List,
   Modal,
   Typography,
   useTheme,
@@ -139,13 +140,14 @@ const FightContainer = () => {
             {users.length === 0 ? (
               <Typography>No more fighters for now, come back soon!</Typography>
             ) : (
-              users.map((user) => {
+              users.map((user, index) => {
                 return (
                   <FightCard
                     key={user._id}
                     user={user}
                     fetchUsers={fetchUsers}
                     handleMatch={handleMatch}
+                    index={index}
                   />
                 );
               })

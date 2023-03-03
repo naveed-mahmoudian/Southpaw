@@ -11,7 +11,7 @@ import SportsMmaIcon from "@mui/icons-material/SportsMma";
 import ClearIcon from "@mui/icons-material/Clear";
 import { useSelector } from "react-redux";
 
-const FightCard = ({ user, fetchUsers, handleMatch }) => {
+const FightCard = ({ user, fetchUsers, handleMatch, index }) => {
   // Variables
   const theme = useTheme();
 
@@ -79,6 +79,7 @@ const FightCard = ({ user, fetchUsers, handleMatch }) => {
         textAlign: "center",
         p: "1rem",
         minWidth: "18rem",
+        maxWidth: "60rem",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
