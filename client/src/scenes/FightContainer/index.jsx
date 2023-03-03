@@ -8,6 +8,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
+import TinderCard from "react-tinder-card";
 import FightCard from "components/FightCard/FightCard";
 import { MATCHES } from "pageConstants";
 import React, { useEffect, useState } from "react";
@@ -55,6 +56,10 @@ const FightContainer = () => {
 
   const handleMatch = async () => {
     handleOpen();
+  };
+
+  const handleSwipe = (direction) => {
+    console.log(direction);
   };
 
   // Use Effect
@@ -142,13 +147,31 @@ const FightContainer = () => {
             ) : (
               users.map((user, index) => {
                 return (
-                  <FightCard
-                    key={user._id}
-                    user={user}
-                    fetchUsers={fetchUsers}
-                    handleMatch={handleMatch}
-                    index={index}
-                  />
+                  <Box
+                    key={index}
+                    sx={{
+                      position: "absolute",
+                      zIndex: `${index}`,
+                      left: "50%",
+                      marginLeft: "-9rem",
+                      top: "50%",
+                      marginTop: "-15rem",
+                    }}
+                  >
+                    <TinderCard
+                      onSwipe={handleSwipe}
+                      preventSwipe={["up", "down"]}
+                      className="pressable"
+                    >
+                      <FightCard
+                        key={user._id}
+                        user={user}
+                        fetchUsers={fetchUsers}
+                        handleMatch={handleMatch}
+                        index={index}
+                      />
+                    </TinderCard>
+                  </Box>
                 );
               })
             )}

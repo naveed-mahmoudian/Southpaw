@@ -78,8 +78,8 @@ const FightCard = ({ user, fetchUsers, handleMatch, index }) => {
       sx={{
         textAlign: "center",
         p: "1rem",
-        minWidth: "18rem",
-        maxWidth: "60rem",
+        width: "18rem",
+        height: "30rem",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
