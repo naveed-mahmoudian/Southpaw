@@ -81,17 +81,23 @@ export const removeMatch = async (req, res) => {
     const { id } = req.params;
     const { userId } = req.body;
 
+    const chatRoom = await ChatRoom.findOne({
+      users: { $all: [id, userId] },
+    });
+
     const updatedCurrentUser = await User.findByIdAndUpdate(
       id,
-      { $pull: { matches: userId } },
+      { $pull: { matches: userId, chat_rooms: chatRoom._id } },
       { new: true }
     );
 
     const updatedUser = await User.findByIdAndUpdate(
       userId,
-      { $pull: { matches: id } },
+      { $pull: { matches: id, chat_rooms: chatRoom._id } },
       { new: true }
     );
+
+    const removedChatRoom = await ChatRoom.findByIdAndDelete(chatRoom._id);
 
     res.status(201).json(updatedCurrentUser);
   } catch (err) {

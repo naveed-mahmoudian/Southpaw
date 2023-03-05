@@ -58,10 +58,6 @@ const FightContainer = () => {
     handleOpen();
   };
 
-  const handleSwipe = (direction) => {
-    console.log(direction);
-  };
-
   // Use Effect
   useEffect(() => {
     fetchUsers();
@@ -143,37 +139,42 @@ const FightContainer = () => {
         ) : (
           <>
             {users.length === 0 ? (
-              <Typography>No more fighters for now, come back soon!</Typography>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: "80svh",
+                }}
+              >
+                <Typography>
+                  No more fighters for now, come back soon!
+                </Typography>
+              </Box>
             ) : (
-              users.map((user, index) => {
-                return (
-                  <Box
-                    key={index}
-                    sx={{
-                      position: "absolute",
-                      zIndex: `${index}`,
-                      left: "50%",
-                      marginLeft: "-9rem",
-                      top: "50%",
-                      marginTop: "-15rem",
-                    }}
-                  >
-                    <TinderCard
-                      onSwipe={handleSwipe}
-                      preventSwipe={["up", "down"]}
-                      className="pressable"
+              <>
+                {users.map((user, index) => {
+                  return (
+                    <Box
+                      key={index}
+                      sx={{
+                        position: "absolute",
+                        left: "50%",
+                        marginLeft: "-9rem",
+                        top: "50%",
+                        marginTop: "-15rem",
+                      }}
                     >
                       <FightCard
-                        key={user._id}
                         user={user}
+                        index={index}
                         fetchUsers={fetchUsers}
                         handleMatch={handleMatch}
-                        index={index}
                       />
-                    </TinderCard>
-                  </Box>
-                );
-              })
+                    </Box>
+                  );
+                })}
+              </>
             )}
           </>
         )}

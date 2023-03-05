@@ -10,8 +10,9 @@ import {
 import SportsMmaIcon from "@mui/icons-material/SportsMma";
 import ClearIcon from "@mui/icons-material/Clear";
 import { useSelector } from "react-redux";
+import TinderCard from "react-tinder-card";
 
-const FightCard = ({ user, fetchUsers, handleMatch, index }) => {
+const FightCard = ({ user, fetchUsers, handleMatch }) => {
   // Variables
   const theme = useTheme();
 
@@ -72,76 +73,99 @@ const FightCard = ({ user, fetchUsers, handleMatch, index }) => {
     }
   };
 
+  const handleSwipes = (() => {
+    let lastInvocation = 0;
+    return (direction) => {
+      const now = Date.now();
+      if (now - lastInvocation < 1000) {
+        console.log("Cannot invoke handleSwipes more than once in 10 seconds");
+        return;
+      }
+      lastInvocation = now;
+      if (direction === "left") {
+        handlePass();
+      } else if (direction === "right") {
+        handleFight();
+      }
+    };
+  })();
+
   return (
-    <Paper
-      variant="outlined"
-      sx={{
-        textAlign: "center",
-        p: "1rem",
-        width: "18rem",
-        height: "30rem",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-      }}
+    <TinderCard
+      onSwipe={handleSwipes}
+      preventSwipe={["up", "down"]}
+      className="pressable"
     >
-      <Avatar
-        alt={`${user.firstName} ${user.lastInitial}`}
-        src={`http://localhost:3001/assets/${user.picturePath}`}
+      <Paper
+        variant="outlined"
         sx={{
-          height: "8rem",
-          width: "8rem",
-        }}
-      />
-      <br></br>
-      <Typography>
-        {user.firstName} {user.lastInitial}.
-      </Typography>
-      <Typography sx={{ fontStyle: "italic" }}>{user.nickname}</Typography>
-      <Typography>{user.location}</Typography>
-      <br></br>
-      <Typography>
-        {user.height} - {user.weight}
-      </Typography>
-      <br></br>
-      <Typography>
-        {user.wins}W - {user.losses}L
-      </Typography>
-      <br></br>
-      <Typography>{user.bio}</Typography>
-      <br></br>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
+          textAlign: "center",
           p: "1rem",
+          width: "18rem",
+          height: "30rem",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
         }}
       >
-        <Button
+        <Avatar
+          alt={`${user.firstName} ${user.lastInitial}`}
+          src={`http://localhost:3001/assets/${user.picturePath}`}
           sx={{
-            border: `1px solid ${theme.palette.primary.main}`,
-            backgroundColor: theme.palette.background.default,
-            color: theme.palette.primary.main,
-            "&:hover": { color: theme.palette.secondary.main },
-            marginRight: "6rem",
+            height: "8rem",
+            width: "8rem",
           }}
-          onClick={handleFight}
-        >
-          <SportsMmaIcon />
-        </Button>
-        <Button
+        />
+        <br></br>
+        <Typography>
+          {user.firstName} {user.lastInitial}.
+        </Typography>
+        <Typography sx={{ fontStyle: "italic" }}>{user.nickname}</Typography>
+        <Typography>{user.location}</Typography>
+        <br></br>
+        <Typography>
+          {user.height} - {user.weight}
+        </Typography>
+        <br></br>
+        <Typography>
+          {user.wins}W - {user.losses}L
+        </Typography>
+        <br></br>
+        <Typography>{user.bio}</Typography>
+        <br></br>
+        <Box
           sx={{
-            border: `1px solid ${theme.palette.primary.main}`,
-            backgroundColor: theme.palette.background.default,
-            color: theme.palette.primary.main,
-            "&:hover": { color: theme.palette.secondary.main },
+            display: "flex",
+            justifyContent: "space-between",
+            p: "1rem",
           }}
-          onClick={handlePass}
         >
-          <ClearIcon />
-        </Button>
-      </Box>
-    </Paper>
+          <Button
+            sx={{
+              border: `1px solid ${theme.palette.primary.main}`,
+              backgroundColor: theme.palette.background.default,
+              color: theme.palette.primary.main,
+              "&:hover": { color: theme.palette.secondary.main },
+              marginRight: "6rem",
+            }}
+            onClick={handlePass}
+          >
+            <ClearIcon />
+          </Button>
+          <Button
+            sx={{
+              border: `1px solid ${theme.palette.primary.main}`,
+              backgroundColor: theme.palette.background.default,
+              color: theme.palette.primary.main,
+              "&:hover": { color: theme.palette.secondary.main },
+            }}
+            onClick={handleFight}
+          >
+            <SportsMmaIcon />
+          </Button>
+        </Box>
+      </Paper>
+    </TinderCard>
   );
 };
 

@@ -13,9 +13,19 @@ const HomePage = () => {
 
   return (
     <>
-      <LogoutButton />
-      <Typography>Welcome, {user.firstName}</Typography>
-      <List sx={{ overflow: "scroll", position: "relative", height: "86svh" }}>
+      <Box
+        sx={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 999,
+        }}
+      >
+        <LogoutButton />
+        <Typography>Welcome, {user.firstName}</Typography>
+      </Box>
+      <List sx={{ overflow: "scroll", height: "86vh" }}>
         {currentPage === HOME ? <FightContainer /> : ""}
       </List>
       <BottomNav />
