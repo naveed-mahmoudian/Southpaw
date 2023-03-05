@@ -78,7 +78,7 @@ const FightCard = ({ user, fetchUsers, handleMatch }) => {
     return (direction) => {
       const now = Date.now();
       if (now - lastInvocation < 1000) {
-        console.log("Cannot invoke handleSwipes more than once in 10 seconds");
+        console.log("Cannot invoke handleSwipes more than once per second");
         return;
       }
       lastInvocation = now;
