@@ -19,6 +19,7 @@ import { setCurrentPage, setLogin } from "../../redux/state";
 import Dropzone from "react-dropzone";
 import { HOME } from "pageConstants";
 import GoogleMaps from "./GoogleMapsAutocomplete";
+import socket from "../../socket";
 
 // Validation Schemas
 const signupSchema = yup.object().shape({
@@ -111,6 +112,7 @@ const Form = () => {
     onSubmitProps.resetForm();
 
     if (loggedIn) {
+      socket.connect();
       dispatch(
         setLogin({
           user: loggedIn.user,

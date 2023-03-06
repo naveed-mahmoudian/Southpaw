@@ -56,12 +56,14 @@ const MatchesContainer = () => {
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
+        alignItems: "center",
         padding: "1rem",
       }}
     >
       <Typography variant="h5" sx={{ marginBottom: "1rem" }}>
         Your Matches
       </Typography>
+
       <Divider />
       {loading ? (
         <Box

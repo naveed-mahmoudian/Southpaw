@@ -43,7 +43,7 @@ const ChatContainer = ({ socket }) => {
   const handleGoBack = () => {
     navigate("/home");
 
-    socket.disconnect();
+    // socket.disconnect();
 
     dispatch(
       setCurrentPage({
@@ -129,7 +129,7 @@ const ChatContainer = ({ socket }) => {
 
   // Use Effect
   useEffect(() => {
-    socket.connect();
+    // socket.connect();
 
     socket.emit("join room", { fromUserId: user._id, toUserId: chatUser._id });
 
