@@ -58,6 +58,10 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    isBanned: {
+      type: Boolean,
+      default: false,
+    },
     matches: [
       {
         type: Schema.Types.ObjectId,

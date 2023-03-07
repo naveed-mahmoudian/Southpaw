@@ -80,6 +80,24 @@ io.on("connection", (socket) => {
     io.to(chatRoomId).emit("end fight", fightData);
   });
 
+  socket.on("fight success", async (fightData) => {
+    const chatRoomId = await getChatRoomId(
+      fightData.fight.winner,
+      fightData.fight.loser
+    );
+
+    io.to(chatRoomId).emit("fight success", fightData);
+  });
+
+  socket.on("fight punishment", async (fightData) => {
+    const chatRoomId = await getChatRoomId(
+      fightData.fight.winner,
+      fightData.fight.loser
+    );
+
+    io.to(chatRoomId).emit("fight punishment", fightData);
+  });
+
   socket.on("disconnect", () => {
     console.log("USER DISCONNECTED");
   });

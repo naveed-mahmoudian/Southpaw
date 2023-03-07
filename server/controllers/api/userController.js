@@ -11,7 +11,13 @@ export const getUsers = async (req, res) => {
 
     if (!users) return res.status(404).json({ msg: "No users found" });
 
-    const filteredUsers = users.filter((user) => user._id != id);
+    const filteredUsers = users.filter((user) => {
+      if (user._id.toString() === id || user.isDeactivated || user.isBanned) {
+        return false;
+      } else {
+        return true;
+      }
+    });
 
     const currentUserFights = currentUser.fights;
     const currentUserPasses = currentUser.passes;

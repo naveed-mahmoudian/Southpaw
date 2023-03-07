@@ -53,6 +53,15 @@ export const login = async (req, res) => {
     if (!isCorrectPw)
       return res.status(400).json({ msg: "Invalid credentials." });
 
+    if (user.isDeactivated)
+      return res
+        .status(400)
+        .json({ msg: "Your account is deactivated", isDeactivated: true });
+    if (user.isBanned)
+      return res
+        .status(400)
+        .json({ msg: "Your account has been banned", isBanned: true });
+
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
 
     user.password = undefined;
