@@ -1,7 +1,10 @@
 import { Avatar, Box, Button, Typography, useTheme } from "@mui/material";
+import { HOME } from "pageConstants";
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { setCurrentPage } from "redux/state";
+import socket from "../../socket";
 
 const EndFightPage = () => {
   // Variables
@@ -10,7 +13,39 @@ const EndFightPage = () => {
 
   // Redux
   const user = useSelector((state) => state.user);
+  const token = useSelector((state) => state.token);
   const chatUser = useSelector((state) => state.chatUser);
+  const dispatch = useDispatch();
+
+  // Helper Functions
+  const handleEndFight = async (winner, loser) => {
+    try {
+      const fightResponse = await fetch("/api/users/actions/endFight", {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ winnerId: winner._id, loserId: loser._id }),
+      });
+
+      const fightData = await fightResponse.json();
+
+      if (fightData) {
+        socket.emit("end fight", fightData);
+      }
+
+      dispatch(
+        setCurrentPage({
+          currentPage: HOME,
+        })
+      );
+
+      navigate("/home");
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <Box
@@ -54,6 +89,7 @@ const EndFightPage = () => {
               minWidth: "8rem",
               maxWidth: "12rem",
             }}
+            onClick={() => handleEndFight(user, chatUser)}
           >
             <Avatar
               src={`http://localhost:3000/assets/${user.picturePath}`}
@@ -82,6 +118,7 @@ const EndFightPage = () => {
               minWidth: "8rem",
               maxWidth: "12rem",
             }}
+            onClick={() => handleEndFight(chatUser, user)}
           >
             <Avatar
               src={`http://localhost:3000/assets/${chatUser.picturePath}`}

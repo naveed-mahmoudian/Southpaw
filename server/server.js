@@ -74,6 +74,12 @@ io.on("connection", (socket) => {
     io.to(chatRoomId).emit("private message", content);
   });
 
+  socket.on("end fight", async (fightData) => {
+    const chatRoomId = await getChatRoomId(fightData.winner, fightData.loser);
+
+    io.to(chatRoomId).emit("end fight", fightData);
+  });
+
   socket.on("disconnect", () => {
     console.log("USER DISCONNECTED");
   });

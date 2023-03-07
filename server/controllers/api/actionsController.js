@@ -2,6 +2,7 @@ import User from "../../models/User.js";
 import ChatRoom from "../../models/ChatRoom.js";
 import getChatRoomId from "../../utils/getChatRoomId.js";
 import Message from "../../models/Message.js";
+import Fight from "../../models/Fight.js";
 
 export const addFight = async (req, res) => {
   try {
@@ -149,5 +150,20 @@ export const sendMessage = async (req, res) => {
     res.status(201).json({ messageSent: true });
   } catch (err) {
     res.status(500).json({ msg: err.message });
+  }
+};
+
+export const endFight = async (req, res) => {
+  try {
+    const { winnerId, loserId } = req.body;
+
+    const newFight = await Fight.create({
+      winner: winnerId,
+      loser: loserId,
+    });
+
+    res.status(201).json(newFight);
+  } catch (err) {
+    res.status(500).json({ err: err.message });
   }
 };

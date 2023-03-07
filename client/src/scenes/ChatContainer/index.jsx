@@ -19,7 +19,7 @@ import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import { useDispatch, useSelector } from "react-redux";
 import { setChatUser, setCurrentPage } from "redux/state";
 import { useNavigate } from "react-router-dom";
-import { MATCHES, PROFILE } from "pageConstants";
+import { HOME, MATCHES, PROFILE } from "pageConstants";
 
 const ChatContainer = ({ socket }) => {
   // Variables
@@ -38,6 +38,7 @@ const ChatContainer = ({ socket }) => {
   const [openEndFightModal, setOpenEndFightModal] = useState(false);
   const handleOpenEndFightModal = () => setOpenEndFightModal(true);
   const handleCloseEndFightModal = () => setOpenEndFightModal(false);
+  const [showChooseWinner, setShowChooseWinner] = useState(false);
 
   // Helper Functions
   const handleGoBack = () => {
@@ -118,6 +119,18 @@ const ChatContainer = ({ socket }) => {
     );
   };
 
+  const handleChooseWinner = async (winner, loser) => {
+    console.log("WINNER", winner);
+    console.log("LOSER", loser);
+
+    dispatch(
+      setCurrentPage({
+        currentPage: HOME,
+      })
+    );
+    navigate("/home");
+  };
+
   // Web Socket
   socket.on("private message", async (content) => {
     try {
@@ -125,6 +138,10 @@ const ChatContainer = ({ socket }) => {
     } catch (err) {
       console.error(err.message);
     }
+  });
+
+  socket.on("end fight", async (fightData) => {
+    setShowChooseWinner(true);
   });
 
   // Use Effect
@@ -141,150 +158,234 @@ const ChatContainer = ({ socket }) => {
 
   return (
     <>
-      <Modal
-        open={openEndFightModal}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-        sx={{
-          display: "flex",
-          height: "100vh",
-          alignItems: "center",
-          backgroundColor: `${theme.palette.background.default}`,
-        }}
-      >
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            width: "100vw",
-          }}
-        >
+      {showChooseWinner ? (
+        <>
           <Typography
-            id="modal-modal-title"
             variant="h6"
-            component="h2"
-            sx={{ textAlign: "center" }}
+            sx={{ marginY: "2rem", textAlign: "center" }}
           >
-            END FIGHT
+            Who won?
           </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2, p: "2rem" }}>
-            WARNING: If you end the fight, both users must agree on an outcome
-            within 24 hours!
-          </Typography>
-          <Button
+          <Box
             sx={{
-              border: `1px solid ${theme.palette.primary.main}`,
-              backgroundColor: theme.palette.background.default,
-              color: theme.palette.primary.main,
-              "&:hover": { color: theme.palette.secondary.main },
-              p: "1rem",
-              marginBottom: "1rem",
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
             }}
-            onClick={() => navigate("/end-fight")}
           >
-            End Fight
-          </Button>
-          <Button
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+                marginRight: "2rem",
+              }}
+            >
+              <Button
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  border: `1px solid ${theme.palette.primary.main}`,
+                  backgroundColor: theme.palette.background.default,
+                  color: theme.palette.primary.main,
+                  "&:hover": { color: theme.palette.secondary.main },
+                  minWidth: "8rem",
+                  maxWidth: "12rem",
+                }}
+                onClick={() => handleChooseWinner(user, chatUser)}
+              >
+                <Avatar
+                  src={`http://localhost:3000/assets/${user.picturePath}`}
+                ></Avatar>
+                <Typography>
+                  {user.firstName} {user.lastInitial}.
+                </Typography>
+              </Button>
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Button
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  border: `1px solid ${theme.palette.primary.main}`,
+                  backgroundColor: theme.palette.background.default,
+                  color: theme.palette.primary.main,
+                  "&:hover": { color: theme.palette.secondary.main },
+                  minWidth: "8rem",
+                  maxWidth: "12rem",
+                }}
+                onClick={() => handleChooseWinner(chatUser, user)}
+              >
+                <Avatar
+                  src={`http://localhost:3000/assets/${chatUser.picturePath}`}
+                ></Avatar>
+                <Typography>
+                  {chatUser.firstName} {chatUser.lastInitial}.
+                </Typography>
+              </Button>
+            </Box>
+          </Box>
+        </>
+      ) : (
+        <>
+          <Modal
+            open={openEndFightModal}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
             sx={{
-              border: `1px solid ${theme.palette.primary.main}`,
-              backgroundColor: theme.palette.background.default,
-              color: theme.palette.primary.main,
-              "&:hover": { color: theme.palette.secondary.main },
+              display: "flex",
+              height: "100vh",
+              alignItems: "center",
+              backgroundColor: `${theme.palette.background.default}`,
             }}
-            onClick={handleCloseEndFightModal}
           >
-            Go Back
-          </Button>
-        </Box>
-      </Modal>
-      <Paper
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          height: "92svh",
-        }}
-      >
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            p: "1rem",
-          }}
-        >
-          <ArrowBackIosNewIcon onClick={handleGoBack} />
-          <Typography onClick={handleProfile}>
-            {chatUser.firstName} {chatUser.lastInitial}.
-          </Typography>
-          <Avatar
-            alt={`${chatUser.firstName} ${chatUser.lastInitial}`}
-            src={`http://localhost:3001/assets/${chatUser.picturePath}`}
-            onClick={handleProfile}
-          />
-        </Box>
-        <List
-          sx={{
-            overflowY: "scroll",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          {messages.length > 0 ? (
-            messages.map((message) => (
-              <ListItem key={message._id}>{message.message}</ListItem>
-            ))
-          ) : (
-            <Typography>No messages</Typography>
-          )}
-        </List>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            p: "1rem",
-          }}
-        >
-          <FormControl variant="standard" fullWidth>
-            <Input
-              fullWidth
-              multiline
-              maxRows={4}
-              placeholder="..."
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              endAdornment={
-                <InputAdornment position="end">
-                  <SendIcon
-                    sx={{
-                      marginRight: "1rem",
-                      "&:hover": {
-                        color: theme.palette.secondary.main,
-                        cursor: "pointer",
-                      },
-                    }}
-                    onClick={handleSendMessage}
-                  />
-                  <EmojiEventsIcon
-                    sx={{
-                      "&:hover": {
-                        color: theme.palette.secondary.main,
-                        cursor: "pointer",
-                      },
-                    }}
-                    onClick={handleOpenEndFightModal}
-                  />
-                </InputAdornment>
-              }
-            />
-          </FormControl>
-        </Box>
-      </Paper>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                width: "100vw",
+              }}
+            >
+              <Typography
+                id="modal-modal-title"
+                variant="h6"
+                component="h2"
+                sx={{ textAlign: "center" }}
+              >
+                END FIGHT
+              </Typography>
+              <Typography
+                id="modal-modal-description"
+                sx={{ mt: 2, p: "2rem" }}
+              >
+                WARNING: If you end the fight, both users must agree on an
+                outcome within 24 hours!
+              </Typography>
+              <Button
+                sx={{
+                  border: `1px solid ${theme.palette.primary.main}`,
+                  backgroundColor: theme.palette.background.default,
+                  color: theme.palette.primary.main,
+                  "&:hover": { color: theme.palette.secondary.main },
+                  p: "1rem",
+                  marginBottom: "1rem",
+                }}
+                onClick={() => navigate("/end-fight")}
+              >
+                End Fight
+              </Button>
+              <Button
+                sx={{
+                  border: `1px solid ${theme.palette.primary.main}`,
+                  backgroundColor: theme.palette.background.default,
+                  color: theme.palette.primary.main,
+                  "&:hover": { color: theme.palette.secondary.main },
+                }}
+                onClick={handleCloseEndFightModal}
+              >
+                Go Back
+              </Button>
+            </Box>
+          </Modal>
+          <Paper
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              height: "92svh",
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                p: "1rem",
+              }}
+            >
+              <ArrowBackIosNewIcon onClick={handleGoBack} />
+              <Typography onClick={handleProfile}>
+                {chatUser.firstName} {chatUser.lastInitial}.
+              </Typography>
+              <Avatar
+                alt={`${chatUser.firstName} ${chatUser.lastInitial}`}
+                src={`http://localhost:3001/assets/${chatUser.picturePath}`}
+                onClick={handleProfile}
+              />
+            </Box>
+            <List
+              sx={{
+                overflowY: "scroll",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              {messages.length > 0 ? (
+                messages.map((message) => (
+                  <ListItem key={message._id}>{message.message}</ListItem>
+                ))
+              ) : (
+                <Typography>No messages</Typography>
+              )}
+            </List>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                p: "1rem",
+              }}
+            >
+              <FormControl variant="standard" fullWidth>
+                <Input
+                  fullWidth
+                  multiline
+                  maxRows={4}
+                  placeholder="..."
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <SendIcon
+                        sx={{
+                          marginRight: "1rem",
+                          "&:hover": {
+                            color: theme.palette.secondary.main,
+                            cursor: "pointer",
+                          },
+                        }}
+                        onClick={handleSendMessage}
+                      />
+                      <EmojiEventsIcon
+                        sx={{
+                          "&:hover": {
+                            color: theme.palette.secondary.main,
+                            cursor: "pointer",
+                          },
+                        }}
+                        onClick={handleOpenEndFightModal}
+                      />
+                    </InputAdornment>
+                  }
+                />
+              </FormControl>
+            </Box>
+          </Paper>
+        </>
+      )}
     </>
   );
 };

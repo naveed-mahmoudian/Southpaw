@@ -10,6 +10,7 @@ import {
   addPass,
   removeMatch,
   sendMessage,
+  endFight,
 } from "../../controllers/api/actionsController.js";
 import { verifyToken } from "../../middleware/auth.js";
 
@@ -25,6 +26,7 @@ router.get("/users/:id/:userId/messages", verifyToken, getMessages);
 router.patch("/users/:id/actions/fight", verifyToken, addFight);
 router.patch("/users/:id/actions/pass", verifyToken, addPass);
 router.patch("/users/:id/actions/removeMatch", verifyToken, removeMatch);
+router.patch("/users/actions/endFight", verifyToken, endFight);
 
 // Create
 router.post("/users/:id/actions/sendMessage", verifyToken, sendMessage);
