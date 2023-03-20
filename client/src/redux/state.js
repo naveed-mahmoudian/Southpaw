@@ -5,6 +5,7 @@ const initialState = {
   token: null,
   currentPage: null,
   chatUser: null,
+  notification: null,
 };
 
 export const authSlice = createSlice({
@@ -20,6 +21,7 @@ export const authSlice = createSlice({
       state.token = null;
       state.currentPage = null;
       state.chatUser = null;
+      state.notification = null;
     },
     setCurrentPage: (state, action) => {
       state.currentPage = action.payload.currentPage;
@@ -27,10 +29,18 @@ export const authSlice = createSlice({
     setChatUser: (state, action) => {
       state.chatUser = action.payload.chatUser;
     },
+    setNotification: (state, action) => {
+      state.notification = action.payload.notification;
+    },
   },
 });
 
-export const { setLogin, setLogout, setCurrentPage, setChatUser } =
-  authSlice.actions;
+export const {
+  setLogin,
+  setLogout,
+  setCurrentPage,
+  setChatUser,
+  setNotification,
+} = authSlice.actions;
 
 export default authSlice.reducer;

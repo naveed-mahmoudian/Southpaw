@@ -8,6 +8,7 @@ import {
 import MatchCard from "components/MatchCard/MatchCard";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import socket from "../../socket";
 
 const MatchesContainer = () => {
   // Variables
@@ -47,6 +48,7 @@ const MatchesContainer = () => {
 
   // Use Effect
   useEffect(() => {
+    socket.connect();
     fetchMatches();
   }, []);
 

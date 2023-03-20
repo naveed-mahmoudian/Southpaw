@@ -75,7 +75,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("end fight", async (fightData) => {
-    const chatRoomId = await getChatRoomId(fightData.winner, fightData.loser);
+    const chatRoomId = await getChatRoomId(fightData.winner._id, fightData.loser._id);
 
     io.to(chatRoomId).emit("end fight", fightData);
   });

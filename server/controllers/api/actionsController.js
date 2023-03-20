@@ -163,7 +163,11 @@ export const endFight = async (req, res) => {
       loser: loserId,
     });
 
-    res.status(201).json(newFight);
+    const populatedFight = await Fight.findById(newFight._id)
+      .populate("winner")
+      .populate("loser");
+
+    res.status(201).json(populatedFight);
   } catch (err) {
     res.status(500).json({ err: err.message });
   }

@@ -1,6 +1,6 @@
 import { Avatar, Box, Button, Typography, useTheme } from "@mui/material";
 import { HOME } from "pageConstants";
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setCurrentPage } from "redux/state";

@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, List, Typography, useTheme } from "@mui/material";
 import BottomNav from "../../components/BottomNav/BottomNav";
 import { useSelector } from "react-redux";
 import FightContainer from "scenes/FightContainer";
 import LogoutButton from "components/LogoutButton/LogoutButton";
 import { HOME } from "pageConstants";
+import socket from "../../socket";
 
 const HomePage = () => {
   const theme = useTheme();

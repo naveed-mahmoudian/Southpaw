@@ -112,7 +112,6 @@ const Form = () => {
     onSubmitProps.resetForm();
 
     if (loggedIn) {
-      socket.connect();
       dispatch(
         setLogin({
           user: loggedIn.user,

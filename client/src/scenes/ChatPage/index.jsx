@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 import LogoutButton from "components/LogoutButton/LogoutButton";
 import ChatContainer from "scenes/ChatContainer";
 import { CHAT } from "pageConstants";
-import socket from "../../socket";
 
 const ChatPage = () => {
   // const theme = useTheme();
@@ -16,7 +15,7 @@ const ChatPage = () => {
     <Box>
       <LogoutButton />
       <Typography>Welcome, {user.firstName}</Typography>
-      {currentPage === CHAT ? <ChatContainer socket={socket} /> : ""}
+      {currentPage === CHAT ? <ChatContainer /> : ""}
     </Box>
   );
 };

@@ -20,8 +20,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { setChatUser, setCurrentPage, setLogout } from "redux/state";
 import { useNavigate } from "react-router-dom";
 import { HOME, MATCHES, PROFILE } from "pageConstants";
+import socket from "../../socket";
 
-const ChatContainer = ({ socket }) => {
+const ChatContainer = () => {
   // Variables
   const theme = useTheme();
   const navigate = useNavigate();
@@ -218,20 +219,20 @@ const ChatContainer = ({ socket }) => {
     }
   });
 
-  socket.on("end fight", async (fightData) => {
-    setShowChooseWinner(true);
-    setFightId(fightData._id);
-  });
+  // socket.on("end fight", async (fightData) => {
+  //   setShowChooseWinner(true);
+  //   setFightId(fightData._id);
+  // });
 
-  socket.on("fight success", async (fightData) => {
-    setUpdatedFight(fightData.fight);
-    setFightSuccess(true);
-  });
+  // socket.on("fight success", async (fightData) => {
+  //   setUpdatedFight(fightData.fight);
+  //   setFightSuccess(true);
+  // });
 
-  socket.on("fight punishment", async (fightData) => {
-    setUpdatedUser(fightData.user);
-    setFightPunishment(true);
-  });
+  // socket.on("fight punishment", async (fightData) => {
+  //   setUpdatedUser(fightData.user);
+  //   setFightPunishment(true);
+  // });
 
   // Use Effect
   useEffect(() => {
@@ -243,6 +244,11 @@ const ChatContainer = ({ socket }) => {
       await fetchMessages();
     }
     getMessages();
+
+    return () => {
+      socket.off("private message");
+      socket.off("join room");
+    };
   }, []);
 
   return (

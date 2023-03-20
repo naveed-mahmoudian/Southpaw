@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Typography, useTheme } from "@mui/material";
 import BottomNav from "../../components/BottomNav/BottomNav";
 import { useSelector } from "react-redux";
 import MatchesContainer from "scenes/MatchesContainer";
 import LogoutButton from "components/LogoutButton/LogoutButton";
 import { MATCHES } from "pageConstants";
+import socket from "../../socket";
 
 const MatchesPage = () => {
   const theme = useTheme();

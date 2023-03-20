@@ -14,6 +14,7 @@ import { MATCHES } from "pageConstants";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentPage } from "redux/state";
+import socket from "../../socket";
 
 const FightContainer = () => {
   // Variables
@@ -60,6 +61,7 @@ const FightContainer = () => {
 
   // Use Effect
   useEffect(() => {
+    socket.connect();
     fetchUsers();
   }, []);
 
